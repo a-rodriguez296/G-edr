@@ -20,30 +20,16 @@
         android:layout_height="wrap_content"
         android:id="@+id/weather_image"
         android:layout_weight="1"
-        android:src="@drawable/offline_weather" />
+        android:src="@drawable/offline_weather2" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ToggleButton
+        android:id="@+id/change_system_button"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/system1_button"
-            android:text="Sistema Europeo"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/system2_button"
-            android:text="Sistema americano"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
+        android:textOn="Sistema europeo"
+        android:textOff="Sistema americano"
+        />
 
 
 </LinearLayout>
