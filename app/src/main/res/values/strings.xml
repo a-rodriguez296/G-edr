@@ -3,4 +3,5 @@
 
     <string name="hello_world">Hola Mundio</string>
     <string name="action_settings">Settings</string>
+    <string name="weather_system">Cambiar sistema de prediccion</string>
 </resources>
