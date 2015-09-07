@@ -16,7 +16,7 @@ public class ForecastActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_forecast);
 
         mImageView = (ImageView) findViewById(R.id.weather_image);
         final ToggleButton button = (ToggleButton) findViewById(R.id.change_system_button);
@@ -27,4 +27,6 @@ public class ForecastActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }
