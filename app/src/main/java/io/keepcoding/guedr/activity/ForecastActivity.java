@@ -1,14 +1,15 @@
-package io.keepcoding.guedr;
+package io.keepcoding.guedr.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
 
+import io.keepcoding.guedr.R;
 
-public class MainActivity extends AppCompatActivity {
+
+public class ForecastActivity extends AppCompatActivity {
 
     private ImageView mImageView;
 
