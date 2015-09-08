@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -97,7 +99,7 @@ public class ForecastActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String stringMetrics = pref.getString(
                 getString(R.string.metric_selection),
                 String.valueOf(SettingsActivity.PREF_CELSIUS));
@@ -105,8 +107,26 @@ public class ForecastActivity extends AppCompatActivity {
         int metrics = Integer.valueOf(stringMetrics);
 
         if (metrics != mCurrentMetrics) {
+            final int previousMetrics = mCurrentMetrics;
             mCurrentMetrics = metrics;
             setForecast(mForecast);
+
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    R.string.updated_preferences,
+                    Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            pref.edit().putString(
+                                    getString(R.string.metric_selection),
+                                    String.valueOf(previousMetrics))
+                                    .apply();
+                            mCurrentMetrics = previousMetrics;
+                            setForecast(mForecast);
+                        }
+                    })
+                    .show();
         }
     }
 }
