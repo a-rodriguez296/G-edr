@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.keepcoding.guedr.R;
+import io.keepcoding.guedr.model.Cities;
 
 public class CityPagerFragment extends Fragment {
+
 
     public static CityPagerFragment newInstance() {
         return new CityPagerFragment();
@@ -34,25 +36,27 @@ public class CityPagerFragment extends Fragment {
     }
 
     protected class CityPagerAdapter extends FragmentPagerAdapter {
+        private Cities mCities;
 
 
         public CityPagerAdapter(FragmentManager fm) {
             super(fm);
+            mCities = Cities.getInstance();
         }
 
         @Override
         public Fragment getItem(int i) {
-            return ForecastFragment.newInstance();
+            return ForecastFragment.newInstance(mCities.getCities().get(i));
         }
 
         @Override
         public int getCount() {
-            return 10;
+            return mCities.getCities().size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return String.format("Ciudad número %d", position + 1);
+            return mCities.getCities().get(position).getName();
         }
     }
 }

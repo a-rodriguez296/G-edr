@@ -19,9 +19,12 @@ import android.widget.TextView;
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.activity.SettingsActivity;
+import io.keepcoding.guedr.model.City;
 import io.keepcoding.guedr.model.Forecast;
 
 public class ForecastFragment extends Fragment {
+
+    private static final String ARG_CITY = "city";
 
     private Forecast mForecast;
 
@@ -33,8 +36,14 @@ public class ForecastFragment extends Fragment {
 
     private int mCurrentMetrics;
 
-    public static Fragment newInstance() {
-        return new ForecastFragment();
+    public static Fragment newInstance(City city) {
+        ForecastFragment fragment = new ForecastFragment();
+
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(ARG_CITY, city);
+        fragment.setArguments(arguments);
+
+        return fragment;
     }
 
     @Override
@@ -63,7 +72,9 @@ public class ForecastFragment extends Fragment {
 
         mCurrentMetrics = Integer.valueOf(stringMetrics);
 
-        setForecast(new Forecast(30, 15, 25, "Algunas nubes", "ico01"));
+        City city = (City) getArguments().getSerializable(ARG_CITY);
+
+        setForecast(city.getForecast());
 
         return root;
     }
