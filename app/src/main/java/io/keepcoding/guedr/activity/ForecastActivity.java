@@ -71,8 +71,8 @@ public class ForecastActivity extends AppCompatActivity {
             metricString = "ºF";
         }
 
-        mMaxTemp.setText(String.format(getString(R.string.max_temp_parameter), maxTemp) + metricString);
-        mMinTemp.setText(String.format(getString(R.string.min_temp_parameter), minTemp) + metricString);
+        mMaxTemp.setText(String.format(getString(R.string.max_temp_parameter), maxTemp, metricString));
+        mMinTemp.setText(String.format(getString(R.string.min_temp_parameter), minTemp, metricString));
         mHumidity.setText(String.format(getString(R.string.humidity_parameter), forecast.getHumidity()));
         mDescription.setText(forecast.getDescription());
     }
