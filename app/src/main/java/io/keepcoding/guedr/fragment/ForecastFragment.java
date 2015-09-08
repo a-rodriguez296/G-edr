@@ -33,6 +33,10 @@ public class ForecastFragment extends Fragment {
 
     private int mCurrentMetrics;
 
+    public static Fragment newInstance() {
+        return new ForecastFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
