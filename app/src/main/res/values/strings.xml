@@ -4,7 +4,7 @@
     <string name="hello_world">Hola Mundio</string>
     <string name="action_settings">Ajustes</string>
     <string name="weather_system">Cambiar sistema de prediccion</string>
-    <string name="max_temp_parameter">Temperatura máxima: %.2f ºC</string>
-    <string name="min_temp_parameter">Temperatura mínima: %.2f ºC</string>
+    <string name="max_temp_parameter">Temperatura máxima: %.2f</string>
+    <string name="min_temp_parameter">Temperatura mínima: %.2f</string>
     <string name="humidity_parameter">Humedad: %.0f %%</string>
 </resources>
