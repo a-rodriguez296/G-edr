@@ -147,7 +147,7 @@ public class ForecastFragment extends Fragment {
 
             if (getView() != null) {
                 Snackbar.make(
-                        getView().findViewById(android.R.id.content),
+                        getView(),
                         R.string.updated_preferences,
                         Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo, new View.OnClickListener() {
