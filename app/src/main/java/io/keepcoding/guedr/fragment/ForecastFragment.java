@@ -26,13 +26,14 @@ public class ForecastFragment extends Fragment {
 
     private static final String ARG_CITY = "city";
 
-    private Forecast mForecast;
+    private City mCity;
 
     private ImageView mIcon;
     private TextView mMaxTemp;
     private TextView mMinTemp;
     private TextView mHumidity;
     private TextView mDescription;
+    private TextView mCityName;
 
     private int mCurrentMetrics;
 
@@ -50,6 +51,10 @@ public class ForecastFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if (getArguments() != null) {
+            mCity = (City) getArguments().getSerializable(ARG_CITY);
+        }
     }
 
     @Nullable
@@ -64,6 +69,7 @@ public class ForecastFragment extends Fragment {
         mHumidity = (TextView) root.findViewById(R.id.humidity);
         mDescription = (TextView) root.findViewById(R.id.forecast_description);
         mIcon = (ImageView) root.findViewById(R.id.forecast_image);
+        mCityName = (TextView) root.findViewById(R.id.city);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String stringMetrics = pref.getString(
@@ -72,9 +78,9 @@ public class ForecastFragment extends Fragment {
 
         mCurrentMetrics = Integer.valueOf(stringMetrics);
 
-        City city = (City) getArguments().getSerializable(ARG_CITY);
 
-        setForecast(city.getForecast());
+        mCityName.setText(mCity.getName());
+        setForecast(mCity.getForecast());
 
         return root;
     }
@@ -84,7 +90,7 @@ public class ForecastFragment extends Fragment {
     }
 
     public void setForecast(Forecast forecast) {
-        mForecast = forecast;
+        mCity.setForecast(forecast);
 
         float maxTemp = mCurrentMetrics == SettingsActivity.PREF_CELSIUS?
                 forecast.getMaxTemp() : toFarenheit(forecast.getMaxTemp());
@@ -137,24 +143,26 @@ public class ForecastFragment extends Fragment {
         if (metrics != mCurrentMetrics) {
             final int previousMetrics = mCurrentMetrics;
             mCurrentMetrics = metrics;
-            setForecast(mForecast);
+            setForecast(mCity.getForecast());
 
-            Snackbar.make(
-                    getView().findViewById(android.R.id.content),
-                    R.string.updated_preferences,
-                    Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            pref.edit().putString(
-                                    getString(R.string.metric_selection),
-                                    String.valueOf(previousMetrics))
-                                    .apply();
-                            mCurrentMetrics = previousMetrics;
-                            setForecast(mForecast);
-                        }
-                    })
-                    .show();
+            if (getView() != null) {
+                Snackbar.make(
+                        getView().findViewById(android.R.id.content),
+                        R.string.updated_preferences,
+                        Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                pref.edit().putString(
+                                        getString(R.string.metric_selection),
+                                        String.valueOf(previousMetrics))
+                                        .apply();
+                                mCurrentMetrics = previousMetrics;
+                                setForecast(mCity.getForecast());
+                            }
+                        })
+                        .show();
+            }
         }
     }
 }
