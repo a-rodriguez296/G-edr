@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import io.keepcoding.guedr.model.Cities;
 
 public class CityPagerFragment extends Fragment {
 
+    private Cities mCities;
 
     public static CityPagerFragment newInstance() {
         return new CityPagerFragment();
@@ -29,10 +32,37 @@ public class CityPagerFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_citypager, container, false);
 
+        mCities = Cities.getInstance();
+
         ViewPager pager = (ViewPager) root.findViewById(R.id.view_pager);
         pager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updateCityInfo(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        updateCityInfo(pager.getCurrentItem());
 
         return root;
+    }
+
+    protected void updateCityInfo(int position) {
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(mCities.getCities().get(position).getName());
+        }
     }
 
     protected class CityPagerAdapter extends FragmentPagerAdapter {
