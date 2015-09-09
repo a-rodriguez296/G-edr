@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import io.keepcoding.guedr.R;
 
@@ -48,9 +49,10 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
-        ViewGroup rootChild = (ViewGroup) root.getChildAt(0);
-        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_main, rootChild, false);
+        LinearLayout rootChild = (LinearLayout) root.getChildAt(0);
+        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, rootChild, false);
         rootChild.addView(bar, 0);
+
 
     }
 
