@@ -3,6 +3,7 @@ package io.keepcoding.guedr.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -15,11 +16,13 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -51,9 +54,18 @@ public class SettingsActivity extends PreferenceActivity {
         ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
         LinearLayout rootChild = (LinearLayout) root.getChildAt(0);
         Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, rootChild, false);
+
+        //noinspection ConstantConditions
+        bar.getNavigationIcon().setColorFilter(
+                ContextCompat.getColor(this, android.R.color.primary_text_dark),
+                PorterDuff.Mode.SRC_IN);
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         rootChild.addView(bar, 0);
-
-
     }
 
     /**
