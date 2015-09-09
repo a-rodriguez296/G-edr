@@ -15,9 +15,12 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.view.ViewGroup;
 
 import io.keepcoding.guedr.R;
 
@@ -39,6 +42,17 @@ public class SettingsActivity extends PreferenceActivity {
 
     public static final int PREF_CELSIUS = 0;
     public static final int PREF_FARENHEIT = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        ViewGroup rootChild = (ViewGroup) root.getChildAt(0);
+        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_main, rootChild, false);
+        rootChild.addView(bar, 0);
+
+    }
 
     /**
      * {@inheritDoc}
