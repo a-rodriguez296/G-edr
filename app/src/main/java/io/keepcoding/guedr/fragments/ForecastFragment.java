@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.activity.SettingsActivity;
+import io.keepcoding.guedr.model.City;
 import io.keepcoding.guedr.model.Forecast;
 
 /**
  * Created by arodriguez on 9/9/15.
  */
 public class ForecastFragment extends Fragment{
+
+    private static final String ARG_CITY = "city";
 
     private Forecast mForecast;
 
@@ -35,8 +38,13 @@ public class ForecastFragment extends Fragment{
 
     private int mCurrentMetrics;
 
-    public static Fragment newInstance() {
-        return new ForecastFragment();
+    public static Fragment newInstance(City city) {
+        ForecastFragment fragment= new ForecastFragment();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(ARG_CITY, city);
+        fragment.setArguments(arguments);
+
+        return fragment;
 
     }
 
@@ -63,7 +71,12 @@ public class ForecastFragment extends Fragment{
         mDescription = (TextView) root.findViewById(R.id.forecast_description);
         mIcon = (ImageView) root.findViewById(R.id.forecast_image);
 
-        setForecast(new Forecast(30, 15, 25, "Algunas nubes", "ico01"));
+
+        City city = (City) getArguments().getSerializable(ARG_CITY);
+
+
+
+        setForecast(city.getmForecast());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mCurrentMetrics = Integer.valueOf(pref.getString(getString(R.string.metric_selection), String.valueOf(SettingsActivity.PREF_CELSIUS)));

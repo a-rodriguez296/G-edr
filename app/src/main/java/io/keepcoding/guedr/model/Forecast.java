@@ -3,7 +3,9 @@ package io.keepcoding.guedr.model;
 
 import android.app.Fragment;
 
-public class Forecast {
+import java.io.Serializable;
+
+public class Forecast implements Serializable{
 
     private float mMaxTemp;
     private float mMinTemp;
