@@ -1,6 +1,8 @@
 package io.keepcoding.guedr.model;
 
 
+import android.app.Fragment;
+
 public class Forecast {
 
     private float mMaxTemp;
@@ -61,4 +63,5 @@ public class Forecast {
     public String toString() {
         return getDescription();
     }
+
 }
