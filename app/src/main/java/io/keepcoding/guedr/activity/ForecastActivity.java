@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,18 +52,29 @@ public class ForecastActivity extends AppCompatActivity {
 
         //comprobar si han cambiado las unidades
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Forma de acceder al nombre del metric selection que esta en strings_activity_settings.xml
         int metrics = Integer.valueOf(pref.getString(getString(R.string.metric_selection), String.valueOf(SettingsActivity.PREF_CELSIUS)));
 
         if (mCurrentMetrics != metrics){
+            final int previousMetrics = mCurrentMetrics;
             mCurrentMetrics = metrics;
             setForecast(mForecast);
+
+            //De esta manera se encuentra la vista raiz android.R.id.content
+            Snackbar.make(findViewById(android.R.id.content), R.string.updated_Preferences, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.undo, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pref.edit().putString(getString(R.string.metric_selection), String.valueOf(previousMetrics))
+                                    .apply();
+                            mCurrentMetrics = previousMetrics;
+                            setForecast(mForecast);
+                        }
+                    })
+                    .show();
         }
-
-
-
     }
 
     protected static float toFarenheit(float celsius){
