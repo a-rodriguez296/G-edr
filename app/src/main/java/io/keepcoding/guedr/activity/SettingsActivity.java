@@ -135,6 +135,9 @@ public class SettingsActivity extends PreferenceActivity {
             // guidelines.
             bindPreferenceSummaryToValue(findPreference(getString(R.string.metric_selection)));
         }
+
+
+
     }
 
     @Override
