@@ -29,12 +29,14 @@ public class ForecastFragment extends Fragment{
     private static final String ARG_CITY = "city";
 
     private Forecast mForecast;
+    private City mCurrentCity;
 
     private ImageView mIcon;
     private TextView mMaxTemp;
     private TextView mMinTemp;
     private TextView mHumidity;
     private TextView mDescription;
+    private TextView mCityName;
 
     private int mCurrentMetrics;
 
@@ -70,13 +72,14 @@ public class ForecastFragment extends Fragment{
         mHumidity = (TextView) root.findViewById(R.id.humidity);
         mDescription = (TextView) root.findViewById(R.id.forecast_description);
         mIcon = (ImageView) root.findViewById(R.id.forecast_image);
+        mCityName = (TextView) root.findViewById(R.id.city);
 
 
-        City city = (City) getArguments().getSerializable(ARG_CITY);
+        mCurrentCity = (City) getArguments().getSerializable(ARG_CITY);
 
 
-
-        setForecast(city.getmForecast());
+        setCity(mCurrentCity);
+        setForecast(mCurrentCity.getmForecast());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mCurrentMetrics = Integer.valueOf(pref.getString(getString(R.string.metric_selection), String.valueOf(SettingsActivity.PREF_CELSIUS)));
@@ -101,18 +104,22 @@ public class ForecastFragment extends Fragment{
             mCurrentMetrics = metrics;
             setForecast(mForecast);
 
-            //De esta manera se encuentra la vista raiz android.R.id.content
-            Snackbar.make(getView().findViewById(android.R.id.content), R.string.updated_Preferences, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            pref.edit().putString(getString(R.string.metric_selection), String.valueOf(previousMetrics))
-                                    .apply();
-                            mCurrentMetrics = previousMetrics;
-                            setForecast(mForecast);
-                        }
-                    })
-                    .show();
+            if (getView() != null){
+                //De esta manera se encuentra la vista raiz android.R.id.content
+                Snackbar.make(
+                        getView().findViewById(android.R.id.content), R.string.updated_Preferences, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                pref.edit().putString(getString(R.string.metric_selection), String.valueOf(previousMetrics))
+                                        .apply();
+                                mCurrentMetrics = previousMetrics;
+                                setForecast(mForecast);
+                            }
+                        })
+                        .show();
+            }
+
         }
     }
 
@@ -120,6 +127,10 @@ public class ForecastFragment extends Fragment{
 
         return (celsius *1.8f) +32f;
 
+    }
+
+    public void setCity(City city){
+        mCityName.setText(city.getmName());
     }
 
 
