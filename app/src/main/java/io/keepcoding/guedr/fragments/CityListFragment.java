@@ -42,7 +42,10 @@ public class CityListFragment extends Fragment {
 
         mCities = Cities.getInstance();
         ListView listView = (ListView) root.findViewById(android.R.id.list);
-        ArrayAdapter<City> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mCities.getCities());
+        ArrayAdapter<City> adapter = new ArrayAdapter<>(
+                getActivity(),
+                android.R.layout.simple_list_item_1, //Layout de la celda
+                mCities.getCities());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

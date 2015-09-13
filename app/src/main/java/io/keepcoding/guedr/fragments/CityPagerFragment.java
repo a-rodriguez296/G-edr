@@ -23,13 +23,26 @@ import io.keepcoding.guedr.model.Cities;
  */
 public class CityPagerFragment  extends Fragment{
 
+    //Clave del argumento que se pasa por parametro
+    private static final String ARG_CITY_INDEX = "cityIndex";
+
     private Cities mCities;
-    
     private ViewPager mPager;
+    private int mInitialIndex;
 
-    public static CityPagerFragment newInstance() {
+    public static CityPagerFragment newInstance(int initialIndex) {
 
-        return new CityPagerFragment();
+        //Crear el fragment
+        CityPagerFragment cityPagerFragment = new CityPagerFragment();
+
+        //Crear los argumentos
+        Bundle arguments = new Bundle();
+        arguments.putInt(ARG_CITY_INDEX, initialIndex);
+
+        //Asignamos los argumentos al fragment
+        cityPagerFragment.setArguments(arguments);
+
+        return cityPagerFragment;
     }
 
     @Override
@@ -38,6 +51,12 @@ public class CityPagerFragment  extends Fragment{
 
         //Para los fragments acá solo se especifica si hay optionsMenu y se hace catch de los argumentos como en
         setHasOptionsMenu(true);
+
+
+        if (getArguments()!= null){
+
+            mInitialIndex = getArguments().getInt(ARG_CITY_INDEX);
+        }
     }
 
     @Nullable
@@ -50,7 +69,11 @@ public class CityPagerFragment  extends Fragment{
         //fragment_city_pager es un contenedor aka fragment vacío
         View root = inflater.inflate(R.layout.fragment_city_pager, container, false);
         mPager = (ViewPager) root.findViewById(R.id.view_pager);
-        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+
+
+        //Cuando un fragment tiene hijos, no se puede usar getFragmentManager().
+        // Este solo se puede usar cuando estoy en una actividad. Para un fragment con mas fragments adentro se usa getChildFragmentManager()
+        mPager.setAdapter(new CityPagerAdapter(getChildFragmentManager()));
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -69,10 +92,17 @@ public class CityPagerFragment  extends Fragment{
             }
         });
 
-        updateCityInformation(mPager.getCurrentItem());
+
+        goToCity(mInitialIndex);
 
         return root;
     }
+
+    public void goToCity(int index){
+        mPager.setCurrentItem(index);
+        updateCityInformation();
+    }
+
 
     protected void updateCityInformation(){
         updateCityInformation(mPager.getCurrentItem());
@@ -100,13 +130,17 @@ public class CityPagerFragment  extends Fragment{
 
         if (item.getItemId() == R.id.previous){
             mPager.setCurrentItem(mPager.getCurrentItem()-1);
+            updateCityInformation();
+            return true;
+        }
+        else if(item.getItemId() == R.id.next){
+            mPager.setCurrentItem(mPager.getCurrentItem()+1);
+            updateCityInformation();
+            return true;
         }
         else{
-            mPager.setCurrentItem(mPager.getCurrentItem()+1);
+            return super.onOptionsItemSelected(item);
         }
-        updateCityInformation();
-        
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -124,6 +158,8 @@ public class CityPagerFragment  extends Fragment{
         }
 
     }
+
+
 
     protected class CityPagerAdapter extends FragmentPagerAdapter {
 
