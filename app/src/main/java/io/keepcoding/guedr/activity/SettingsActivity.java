@@ -3,25 +3,20 @@ package io.keepcoding.guedr.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-
-import io.keepcoding.guedr.R;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import java.util.List;
+
+import io.keepcoding.guedr.R;
 
 
 /**
@@ -39,6 +34,21 @@ public class SettingsActivity extends PreferenceActivity {
 
     public static final int PREF_CELSIUS = 0;
     public static final int PREF_FARENHEIT = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        //Referencia a la raíz de la interfaz
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        ViewGroup rootChild = (ViewGroup) root.getChildAt(0);
+        Toolbar bar =(Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_main,(ViewGroup) root.getChildAt(0), false);
+
+        //La vista no se puede agregar en el root como tal. Se debe agregar en el hijo
+        rootChild.addView(bar, 0);
+
+    }
 
     /**
      * {@inheritDoc}
