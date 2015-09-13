@@ -36,6 +36,7 @@ public class CityPagerFragment  extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Para los fragments acá solo se especifica si hay optionsMenu y se hace catch de los argumentos como en
         setHasOptionsMenu(true);
     }
 

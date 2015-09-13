@@ -56,6 +56,10 @@ public class ForecastFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
+        if (getArguments()!= null){
+            mCurrentCity = (City) getArguments().getSerializable(ARG_CITY);
+        }
     }
 
     @Nullable
@@ -75,7 +79,7 @@ public class ForecastFragment extends Fragment{
         mCityName = (TextView) root.findViewById(R.id.city);
 
 
-        mCurrentCity = (City) getArguments().getSerializable(ARG_CITY);
+
 
 
         setCity(mCurrentCity);

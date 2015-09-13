@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import io.keepcoding.guedr.R;
+import io.keepcoding.guedr.fragments.CityListFragment;
 import io.keepcoding.guedr.fragments.CityPagerFragment;
 
 /**
@@ -24,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         FragmentManager fm = getFragmentManager();
-        if (fm.findFragmentById(R.id.fragment_citypager) == null){
+        if (fm.findFragmentById(R.id.fragment) == null){
             fm.beginTransaction()
-                    .add(R.id.fragment_citypager, CityPagerFragment.newInstance())
+                    .add(R.id.fragment, CityListFragment.newInstance())
                     .commit();
         }
     }
