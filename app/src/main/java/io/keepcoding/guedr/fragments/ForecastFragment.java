@@ -105,9 +105,9 @@ public class ForecastFragment extends Fragment{
             setForecast(mForecast);
 
             if (getView() != null){
-                //De esta manera se encuentra la vista raiz android.R.id.content
+
                 Snackbar.make(
-                        getView().findViewById(android.R.id.content), R.string.updated_Preferences, Snackbar.LENGTH_LONG)
+                        getView(), R.string.updated_Preferences, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

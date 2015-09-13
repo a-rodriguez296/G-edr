@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,10 +24,19 @@ import io.keepcoding.guedr.model.Cities;
 public class CityPagerFragment  extends Fragment{
 
     private Cities mCities;
+    
+    private ViewPager mPager;
 
     public static CityPagerFragment newInstance() {
 
         return new CityPagerFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -36,9 +48,9 @@ public class CityPagerFragment  extends Fragment{
 
         //fragment_city_pager es un contenedor aka fragment vacío
         View root = inflater.inflate(R.layout.fragment_city_pager, container, false);
-        ViewPager pager = (ViewPager) root.findViewById(R.id.view_pager);
-        pager.setAdapter(new CityPagerAdapter(getFragmentManager()));
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mPager = (ViewPager) root.findViewById(R.id.view_pager);
+        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -56,9 +68,14 @@ public class CityPagerFragment  extends Fragment{
             }
         });
 
-        updateCityInformation(pager.getCurrentItem());
+        updateCityInformation(mPager.getCurrentItem());
 
         return root;
+    }
+
+    protected void updateCityInformation(){
+        updateCityInformation(mPager.getCurrentItem());
+
     }
 
 
@@ -70,6 +87,42 @@ public class CityPagerFragment  extends Fragment{
 
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.citypager, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.previous){
+            mPager.setCurrentItem(mPager.getCurrentItem()-1);
+        }
+        else{
+            mPager.setCurrentItem(mPager.getCurrentItem()+1);
+        }
+        updateCityInformation();
+        
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        if (mPager!= null){
+
+            MenuItem previous = menu.findItem(R.id.previous);
+            MenuItem next = menu.findItem(R.id.next);
+
+            previous.setEnabled(mPager.getCurrentItem()>0);
+            next.setEnabled(mPager.getCurrentItem()<mCities.getCities().size()-1);
+
+        }
+
+    }
 
     protected class CityPagerAdapter extends FragmentPagerAdapter {
 
