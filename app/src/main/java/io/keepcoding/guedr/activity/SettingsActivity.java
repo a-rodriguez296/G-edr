@@ -3,6 +3,7 @@ package io.keepcoding.guedr.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -10,8 +11,10 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -43,7 +46,17 @@ public class SettingsActivity extends PreferenceActivity {
         //Referencia a la raíz de la interfaz
         ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
         ViewGroup rootChild = (ViewGroup) root.getChildAt(0);
-        Toolbar bar =(Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_main,(ViewGroup) root.getChildAt(0), false);
+        Toolbar bar =(Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings,(ViewGroup) root.getChildAt(0), false);
+        bar.getNavigationIcon().setColorFilter(
+                ContextCompat.getColor(this, android.R.color.primary_text_dark),
+                PorterDuff.Mode.SRC_IN);
+
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         //La vista no se puede agregar en el root como tal. Se debe agregar en el hijo
         rootChild.addView(bar, 0);
