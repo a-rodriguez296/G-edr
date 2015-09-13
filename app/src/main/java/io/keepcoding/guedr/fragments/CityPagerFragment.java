@@ -73,7 +73,7 @@ public class CityPagerFragment  extends Fragment{
 
         //Cuando un fragment tiene hijos, no se puede usar getFragmentManager().
         // Este solo se puede usar cuando estoy en una actividad. Para un fragment con mas fragments adentro se usa getChildFragmentManager()
-        mPager.setAdapter(new CityPagerAdapter(getChildFragmentManager()));
+        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

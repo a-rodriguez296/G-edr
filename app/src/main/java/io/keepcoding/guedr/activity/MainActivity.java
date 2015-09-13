@@ -1,6 +1,7 @@
 package io.keepcoding.guedr.activity;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
     public void onCitySelected(City city, int index) {
 
 
-        FragmentManager fm = getFragmentManager();
+/*        FragmentManager fm = getFragmentManager();
 
             fm.beginTransaction()
                     .replace(R.id.fragment, CityPagerFragment.newInstance(index))
@@ -47,12 +48,17 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
                     .addToBackStack(null)
                     .commit();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+
+
+        Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
+        cityPagerIntent.putExtra(CityPagerActivity.ARG_CITY_INDEX, index);
+        startActivity(cityPagerIntent);
 
     }
 
 
-    @Override
+/*    @Override
     public void onBackPressed() {
         //Hay que quitar el super, pq este por defecto hace finish de la actividad
         FragmentManager fm = getFragmentManager();
@@ -69,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         else{
             super.onBackPressed();
         }
-    }
+    }*/
 
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home){
@@ -88,5 +94,5 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         else{
             return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 }
