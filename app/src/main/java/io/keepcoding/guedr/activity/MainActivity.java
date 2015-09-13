@@ -3,6 +3,7 @@ package io.keepcoding.guedr.activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.fragments.CityPagerFragment;
@@ -18,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         FragmentManager fm = getFragmentManager();
         if (fm.findFragmentById(R.id.fragment_citypager) == null){
             fm.beginTransaction()
@@ -25,4 +30,6 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+
 }

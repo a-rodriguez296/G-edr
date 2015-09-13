@@ -1,5 +1,7 @@
 package io.keepcoding.guedr.fragments;
 
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -18,7 +20,7 @@ import io.keepcoding.guedr.model.Cities;
  */
 public class CityPagerFragment  extends Fragment{
 
-
+    private Cities mCities;
 
     public static CityPagerFragment newInstance() {
 
@@ -30,12 +32,42 @@ public class CityPagerFragment  extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
+        mCities = Cities.getInstance();
+
         //fragment_city_pager es un contenedor aka fragment vacío
         View root = inflater.inflate(R.layout.fragment_city_pager, container, false);
         ViewPager pager = (ViewPager) root.findViewById(R.id.view_pager);
         pager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updateCityInformation(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        updateCityInformation(pager.getCurrentItem());
 
         return root;
+    }
+
+
+    protected void updateCityInformation(int position){
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setTitle(mCities.getCities().get(position).getmName());
+        }
+
     }
 
 
