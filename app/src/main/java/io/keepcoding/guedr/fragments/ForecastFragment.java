@@ -38,8 +38,10 @@ public class ForecastFragment extends Fragment{
     private TextView mDescription;
     private TextView mCityName;
 
+
     private int mCurrentMetrics;
 
+    //Método de clase para inicializar el el fragment con una ciudad
     public static Fragment newInstance(City city) {
         ForecastFragment fragment= new ForecastFragment();
         Bundle arguments = new Bundle();
@@ -83,6 +85,7 @@ public class ForecastFragment extends Fragment{
 
 
         setCity(mCurrentCity);
+
         setForecast(mCurrentCity.getmForecast());
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -159,6 +162,7 @@ public class ForecastFragment extends Fragment{
         mMinTemp.setText(String.format(getString(R.string.min_temp_parameter), minTemp, metricString));
         mHumidity.setText(String.format(getString(R.string.humidity_parameter), forecast.getHumidity()));
         mDescription.setText(forecast.getDescription());
+        mCityName.setText(mCurrentCity.getmName());
     }
 
 

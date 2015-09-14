@@ -1,5 +1,7 @@
 package io.keepcoding.guedr.fragments;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.Fragment;
@@ -25,6 +27,9 @@ public class CityPagerFragment  extends Fragment{
 
     //Clave del argumento que se pasa por parametro
     private static final String ARG_CITY_INDEX = "cityIndex";
+
+    //Clave del diccionario de preferencias
+    public static final String PREF_LAST_CITY = "lastCity";
 
     private Cities mCities;
     private ViewPager mPager;
@@ -115,6 +120,13 @@ public class CityPagerFragment  extends Fragment{
         if (actionBar != null){
             actionBar.setTitle(mCities.getCities().get(position).getmName());
         }
+
+
+        //Guardar en sharedPreferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().
+                putInt(PREF_LAST_CITY, position).
+                apply();
 
     }
 
