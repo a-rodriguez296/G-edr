@@ -2,6 +2,7 @@ package io.keepcoding.guedr.activity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -47,12 +48,21 @@ public class CityPagerActivity  extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home){
-            finish();
+
+            /*Esto es lo mismo que poner finish.
+            Como en el manifest defini quien es el padre de esta Actividad, este metodo (NavUtils.navigateUpFromSameTask(this)) funciona*/
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         else{
             return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        NavUtils.navigateUpFromSameTask(this);
     }
 }

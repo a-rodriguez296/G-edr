@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
 import io.keepcoding.guedr.R;
@@ -22,16 +23,36 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        float density = metrics.density;
+        int dpWidth = (int) (width /density);
+        int dpHeight = (int) (height / density);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
         FragmentManager fm = getFragmentManager();
-        if (fm.findFragmentById(R.id.fragment) == null){
-            fm.beginTransaction()
-                    .add(R.id.fragment, CityListFragment.newInstance())
-                    .commit();
+
+        //Primero hay que preguntar si existe el hueco para el fragment. Si existe, cargo el fragment
+
+        if (findViewById(R.id.citylist) != null){
+            if (fm.findFragmentById(R.id.citylist) == null){
+                fm.beginTransaction()
+                        .add(R.id.citylist, CityListFragment.newInstance())
+                        .commit();
+            }
+        }
+
+
+        if (findViewById(R.id.citypager) != null){
+            if (fm.findFragmentById(R.id.citypager) == null){
+                fm.beginTransaction()
+                        .add(R.id.citypager, CityPagerFragment.newInstance(0))
+                        .commit();
+            }
         }
     }
 
@@ -51,10 +72,22 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
 
-        Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
-        cityPagerIntent.putExtra(CityPagerActivity.ARG_CITY_INDEX, index);
-        startActivity(cityPagerIntent);
+        //Averiguar si estoy en modo split screen
+        if (findViewById(R.id.citypager) != null){
 
+            //Caso split screen
+
+            FragmentManager fm = getFragmentManager();
+            CityPagerFragment cityPagerFragment = (CityPagerFragment) fm.findFragmentById(R.id.citypager);
+            cityPagerFragment.goToCity(index);
+        }
+        else{
+
+            //Caso no split screen
+            Intent cityPagerIntent = new Intent(this, CityPagerActivity.class);
+            cityPagerIntent.putExtra(CityPagerActivity.ARG_CITY_INDEX, index);
+            startActivity(cityPagerIntent);
+        }
     }
 
 
