@@ -40,7 +40,7 @@ public class CityListFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_city_list, container, false);
 
-        mCities = Cities.getInstance();
+        mCities = Cities.getInstance(getActivity());
         ListView listView = (ListView) root.findViewById(android.R.id.list);
         ArrayAdapter<City> adapter = new ArrayAdapter<>(
                 getActivity(),

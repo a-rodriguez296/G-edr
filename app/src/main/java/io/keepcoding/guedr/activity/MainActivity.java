@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.fragments.CityListFragment;
 import io.keepcoding.guedr.fragments.CityPagerFragment;
+import io.keepcoding.guedr.model.Cities;
 import io.keepcoding.guedr.model.City;
 
 /**
@@ -60,6 +63,21 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
                         .commit();
             }
         }
+
+
+        FloatingActionButton addCityButton = (FloatingActionButton) findViewById(R.id.add_city_button);
+        if (addCityButton != null){
+
+            addCityButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Cities cities = Cities.getInstance(MainActivity.this);
+                    cities.addCity(String.format("Ciudad %d", cities.getCities().size() +1));
+                }
+            });
+        }
+
     }
 
 

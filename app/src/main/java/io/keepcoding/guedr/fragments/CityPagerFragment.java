@@ -69,7 +69,7 @@ public class CityPagerFragment  extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        mCities = Cities.getInstance();
+        mCities = Cities.getInstance(getActivity());
 
         //fragment_city_pager es un contenedor aka fragment vacío
         View root = inflater.inflate(R.layout.fragment_city_pager, container, false);
@@ -180,7 +180,7 @@ public class CityPagerFragment  extends Fragment{
 
         public CityPagerAdapter(FragmentManager fm) {
             super(fm);
-            mCities = Cities.getInstance();
+            mCities = Cities.getInstance(getActivity());
         }
 
         @Override
