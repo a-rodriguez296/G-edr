@@ -4,14 +4,15 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.MenuItem;
 import android.view.View;
+
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.fragments.CityListFragment;
@@ -23,6 +24,9 @@ import io.keepcoding.guedr.model.City;
  * Created by arodriguez on 9/10/15.
  */
 public class MainActivity extends AppCompatActivity implements CityListFragment.CityListListener{
+
+
+    private FloatingActionButton mAddCityButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
         }
 
 
-        FloatingActionButton addCityButton = (FloatingActionButton) findViewById(R.id.add_city_button);
-        if (addCityButton != null){
+        mAddCityButton = (FloatingActionButton) findViewById(R.id.add_city_button);
+        if (mAddCityButton != null){
 
-            addCityButton.setOnClickListener(new View.OnClickListener() {
+            mAddCityButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -77,19 +81,37 @@ public class MainActivity extends AppCompatActivity implements CityListFragment.
                     cities.addCity(String.format("Ciudad %d", cities.getCities().size() +1));
 
                     Snackbar.make(
-                            findViewById(android.R.id.content),
+                            findViewById(R.id.coordinator),
                             "Ciudad añadida",
                             Snackbar.LENGTH_LONG)
                             .show();
-
-
-
                 }
             });
         }
+        mAddCityButton.setVisibility(View.GONE);
+
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Hacer aparecer el botón después de 2000 mili segundo
+
+        Handler showAddButton = new Handler();
+        showAddButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mAddCityButton != null){
+                    mAddCityButton.show();
+                }
+            }
+        }, 2000);
+
+
+    }
 
     @Override
     public void onCitySelected(City city, int index) {
