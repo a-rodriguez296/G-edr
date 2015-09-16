@@ -1,15 +1,20 @@
 package io.keepcoding.guedr.fragments;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +24,7 @@ import android.view.ViewGroup;
 
 import io.keepcoding.guedr.R;
 import io.keepcoding.guedr.model.Cities;
+
 
 /**
  * Created by arodriguez on 9/10/15.
@@ -30,6 +36,8 @@ public class CityPagerFragment  extends Fragment{
 
     //Clave del diccionario de preferencias
     public static final String PREF_LAST_CITY = "lastCity";
+
+    private CityBroadcastReceiver mBroadcastReceiver;
 
     private Cities mCities;
     private ViewPager mPager;
@@ -78,7 +86,9 @@ public class CityPagerFragment  extends Fragment{
 
         //Cuando un fragment tiene hijos, no se puede usar getFragmentManager().
         // Este solo se puede usar cuando estoy en una actividad. Para un fragment con mas fragments adentro se usa getChildFragmentManager()
-        mPager.setAdapter(new CityPagerAdapter(getFragmentManager()));
+
+        FragmentPagerAdapter adapter = new CityPagerAdapter(getFragmentManager());
+        mPager.setAdapter(adapter);
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -100,8 +110,22 @@ public class CityPagerFragment  extends Fragment{
 
         goToCity(mInitialIndex);
 
+        mBroadcastReceiver = new CityBroadcastReceiver(mPager.getAdapter());
+        getActivity().
+                registerReceiver(mBroadcastReceiver,
+                        //Filtro para que solo escuche este broadcast
+                        new IntentFilter(Cities.CITY_LIST_CHANGED_ACTION));
+
         return root;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        getActivity().unregisterReceiver(mBroadcastReceiver);
+    }
+
 
     public void goToCity(int index){
         mPager.setCurrentItem(index);
@@ -117,7 +141,7 @@ public class CityPagerFragment  extends Fragment{
 
     protected void updateCityInformation(int position){
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null && mCities.getCities().size()>0){
             actionBar.setTitle(mCities.getCities().get(position).getmName());
         }
 
@@ -196,6 +220,28 @@ public class CityPagerFragment  extends Fragment{
         @Override
         public CharSequence getPageTitle(int position) {
             return mCities.cityAtPosition(position).getmName();
+        }
+    }
+
+
+
+    private class CityBroadcastReceiver extends BroadcastReceiver {
+
+
+        private PagerAdapter mAdapter;
+
+
+        public CityBroadcastReceiver(PagerAdapter adapter){
+            super();
+            mAdapter = adapter;
+
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            //Esto es como un reloadData
+            mAdapter.notifyDataSetChanged();
         }
     }
 

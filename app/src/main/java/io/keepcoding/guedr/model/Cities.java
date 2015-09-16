@@ -1,6 +1,7 @@
 package io.keepcoding.guedr.model;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -17,6 +18,9 @@ public class Cities {
 
 
     private static final String PREF_CITIES = "prefCities";
+
+    public static final String CITY_LIST_CHANGED_ACTION = "citiesChanged";
+
 
     private WeakReference<Context> mContext;
 
@@ -85,6 +89,15 @@ public class Cities {
 
         mCities.add(new City(cityName));
         save();
+
+        if (mContext.get() != null){
+
+            Intent broadcast = new Intent(CITY_LIST_CHANGED_ACTION);
+            mContext.get().sendBroadcast(broadcast);
+
+        }
+
+
     }
 
 
